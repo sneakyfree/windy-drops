@@ -34,11 +34,11 @@ program
 
 program
   .command("validate")
-  .description("Validate a drop's SKILL.md frontmatter against the schema (WD-5)")
+  .description("Validate a drop's SKILL.md frontmatter against the schema")
   .argument("<path>", "drop directory")
-  .action(async () => {
-    console.error("validate: not yet implemented (WD-5)");
-    process.exit(2);
+  .action(async (path: string) => {
+    const { run } = await import("./commands/validate.js");
+    await run({ path });
   });
 
 program

@@ -583,8 +583,8 @@ Phase B ships M3a + M3b in parallel. Both SDKs share the same CLI surface (`wind
 ### WD-5: SDK `validate` command
 
 **Phase:** B
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-4
 **Blocks:** WD-6 (bundle should fail-fast on invalid manifests)
 
