@@ -825,8 +825,8 @@ The registry is the core service: it indexes drops, validates publishes, serves 
 ### WD-12: Registry repo bootstrap + FastAPI + Docker + `/version`
 
 **Phase:** C
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; repo at sneakyfree/windy-registry; commit f37a72b style on main; deploy/SUBSTRATE.md authored; production deploy queued for WD-13+)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-0 (uses schema for validation)
 **Blocks:** WD-13, WD-14, WD-15, WD-16+ (everything else in Phase C)
 
