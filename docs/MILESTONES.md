@@ -12,6 +12,11 @@ Tracking the substrate buildout, in order.
 - [ADR-053: Windy Drops Substrate v1](https://github.com/sneakyfree/kit-army-config/blob/main/docs/adr-053-windy-drops-substrate-v1.md) — artifact format, registry, install API, monetization, forking, sandbox, share URLs, AI agent authorship
 - [ADR-054: Control Panel Substrate v1](https://github.com/sneakyfree/kit-army-config/blob/main/docs/adr-054-control-panel-substrate-v1.md) — Vitals + Fleet protocols, first surface
 
+## M1.5 — Pre-strand integration audit + DNA strand master plan (2026-05-21) ✅
+- [AUDIT_2026-05-21.md](AUDIT_2026-05-21.md) — 12-document targeted ecosystem audit; 0 🚨 conflicts, 3 ⚠️ gaps folded into strands
+- [DNA_STRAND_MASTER_PLAN.md](DNA_STRAND_MASTER_PLAN.md) — 34 atomic strands (WD-0 → WD-34) across 6 phases; full dependency graph + acceptance criteria + implementation hints
+- Strand status tracked in the strand file itself; this MILESTONES.md is the high-level view
+
 ## M2 — Canonical schema + dual-language bindings (~1.5 days)
 - `schemas/windy.drop.v1.json` — JSON Schema source of truth
 - `@windy/drops-artifact-spec` (npm) — TS bindings codegen from JSON Schema
