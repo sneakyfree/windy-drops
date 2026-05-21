@@ -1,0 +1,8 @@
+{
+  "schema": "windy.drop.v1",
+  "id": "broken-no-author",
+  "name": "Broken Drop",
+  "type": "skill",
+  "version": "1.0.0",
+  "license": "MIT"
+}

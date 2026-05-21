@@ -1,0 +1,456 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.windydrops.com/windy.drop.v1.json",
+  "title": "Windy Drop Manifest v1",
+  "description": "Canonical schema for windy.drop.v1 SKILL.md frontmatter. Source of truth; both TypeScript (Zod) and Python (Pydantic v2) bindings codegen from this file. Strand: WD-0 of DNA_STRAND_MASTER_PLAN.md.",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "name",
+    "type",
+    "version",
+    "author",
+    "license"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schema": {
+      "description": "Self-identifying version of the manifest format. Consumers MUST reject majors they do not understand.",
+      "const": "windy.drop.v1"
+    },
+    "id": {
+      "description": "Stable globally-unique slug. Case-sensitive, kebab-case. Convention: <author-slug>-<drop-slug>.",
+      "$ref": "#/$defs/dropId"
+    },
+    "name": {
+      "description": "Display name. Plain UTF-8 string OR i18n object with a 'default' locale pointer.",
+      "$ref": "#/$defs/i18nString"
+    },
+    "subtitle": {
+      "description": "One-line description. Same i18n shape as 'name'.",
+      "$ref": "#/$defs/i18nString"
+    },
+    "type": {
+      "description": "Reserved drop type for v1. New types are additive; surfaces that don't understand a type filter it out.",
+      "$ref": "#/$defs/dropType"
+    },
+    "version": {
+      "description": "SemVer 2.0.0. Each (id, version) is immutable once published.",
+      "$ref": "#/$defs/semver"
+    },
+    "forked_from": {
+      "description": "Drop id of the original this was forked from. null for originals. Filled automatically by SDK on `windy-drops fork`.",
+      "oneOf": [
+        { "$ref": "#/$defs/dropId" },
+        { "type": "null" }
+      ]
+    },
+    "author": {
+      "description": "Array of authors. Each is {name, callsign?, passport?, type?, operator?}. type='agent' requires operator (per ADR-053).",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/author" }
+    },
+    "license": {
+      "description": "SPDX license identifier (e.g., MIT, Apache-2.0, CC-BY-4.0, proprietary).",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "consumes": {
+      "description": "Protocols + versions the drop needs at runtime (e.g., 'windy.vitals.v1').",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9.]*\\.v[0-9]+$"
+      },
+      "default": []
+    },
+    "surfaces": {
+      "description": "Which consumer surfaces accept this drop (open-ended; surfaces register their own ids).",
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "default": []
+    },
+    "entry": {
+      "description": "Entry-point file (type-dependent; absent for content-only types).",
+      "type": "string",
+      "minLength": 1
+    },
+    "depends_on": {
+      "description": "Other drops this one composes with. Resolved at install time by the registry.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/dependency" },
+      "default": []
+    },
+    "tags": {
+      "description": "Free-form tags for search.",
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 64 },
+      "default": []
+    },
+    "preview": {
+      "description": "Path (bundle-relative) to preview image. Recommended 1200x630 PNG.",
+      "type": "string",
+      "minLength": 1
+    },
+    "preview_mock_data": {
+      "description": "Path (bundle-relative) to mock data JSON used by the live-preview sandbox.",
+      "type": "string",
+      "minLength": 1
+    },
+    "locale_hint": {
+      "description": "Primary BCP 47 locale. Used for filtering + sort.",
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(-[A-Z][a-z]{3})?(-[A-Z]{2}|-[0-9]{3})?$"
+    },
+    "pricing": {
+      "description": "Pricing block. Defaults to free.",
+      "$ref": "#/$defs/pricing"
+    },
+    "monetization": {
+      "description": "Monetization controls (tip-jar opt-in, Stripe account, payout currency).",
+      "$ref": "#/$defs/monetization"
+    },
+    "royalty": {
+      "description": "Royalty rules for forks. Meaningful when pricing.type=paid.",
+      "$ref": "#/$defs/royalty"
+    },
+    "signature": {
+      "description": "Eternitas signature block. Optional; required by registry only when pricing.type=paid (v1.1).",
+      "$ref": "#/$defs/signature"
+    },
+    "control_panel": {
+      "description": "Type-specific extension for type=control-panel-template. See ADR-054.",
+      "$ref": "#/$defs/controlPanelExtension"
+    },
+    "skill": {
+      "description": "Type-specific extension for type=skill. Reserved.",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "tool": {
+      "description": "Type-specific extension for type=tool. Reserved.",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "theme": {
+      "description": "Type-specific extension for type=theme. Reserved.",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "voice_pack": {
+      "description": "Type-specific extension for type=voice-pack. Reserved.",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "workflow": {
+      "description": "Type-specific extension for type=workflow. Reserved.",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "allOf": [
+    {
+      "type": "object",
+      "if": {
+        "type": "object",
+        "properties": {
+          "author": {
+            "type": "array",
+            "contains": {
+              "type": "object",
+              "properties": { "type": { "const": "agent" } },
+              "required": ["type"]
+            }
+          }
+        }
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "author": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "if": {
+                "type": "object",
+                "properties": { "type": { "const": "agent" } },
+                "required": ["type"]
+              },
+              "then": {
+                "type": "object",
+                "required": ["name", "passport", "operator"]
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "dropId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Lowercase kebab-case slug. Allowed chars: [a-z0-9-]. Must start with [a-z0-9]."
+    },
+    "i18nString": {
+      "oneOf": [
+        { "type": "string", "minLength": 1, "maxLength": 200 },
+        {
+          "type": "object",
+          "minProperties": 2,
+          "required": ["default"],
+          "properties": {
+            "default": {
+              "type": "string",
+              "pattern": "^[a-z]{2,3}(-[A-Z][a-z]{3})?(-[A-Z]{2}|-[0-9]{3})?$",
+              "description": "BCP 47 locale tag pointing to the canonical fallback key in this object."
+            }
+          },
+          "patternProperties": {
+            "^[a-z]{2,3}(-[A-Z][a-z]{3})?(-[A-Z]{2}|-[0-9]{3})?$": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+      "description": "SemVer 2.0.0 — see https://semver.org/spec/v2.0.0.html"
+    },
+    "dropType": {
+      "type": "string",
+      "enum": [
+        "control-panel-template",
+        "skill",
+        "tool",
+        "theme",
+        "voice-pack",
+        "workflow"
+      ],
+      "description": "v1 reserved drop types. New types are additive in v1.x via ADR + consumer surface."
+    },
+    "passport": {
+      "type": "string",
+      "pattern": "^E[THX]\\d{2}-[A-Z0-9]{4}-[A-Z0-9]{4}$",
+      "description": "Eternitas passport — ET (agent), EH (human), EX (hybrid). Format: PREFIX-XXXX-XXXX with birth year."
+    },
+    "author": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "callsign": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "passport": {
+          "$ref": "#/$defs/passport",
+          "description": "Eternitas passport. Presence enables signature verification on publish."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["human", "agent"],
+          "default": "human"
+        },
+        "operator": {
+          "$ref": "#/$defs/passport",
+          "description": "Required when type='agent'. The human operator's passport (for credit chain + integrity compounding)."
+        }
+      }
+    },
+    "dependency": {
+      "type": "object",
+      "required": ["id", "type"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/dropId" },
+        "type": { "$ref": "#/$defs/dropType" },
+        "version": {
+          "type": "string",
+          "description": "SemVer range (e.g., '^1.0.0', '~2.1', '>=1.0 <2.0'). Resolved at install time.",
+          "minLength": 1
+        }
+      }
+    },
+    "pricing": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["free", "tip-jar", "paid", "subscription"],
+          "default": "free",
+          "description": "free + tip-jar ship in v1. paid in v1.1. subscription reserved (not in v1.1)."
+        },
+        "amount_cents": {
+          "oneOf": [
+            { "type": "integer", "minimum": 100, "maximum": 100000 },
+            { "type": "null" }
+          ],
+          "description": "Integer cents. Required when type=paid; null otherwise."
+        },
+        "currency": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Z]{3}$",
+              "description": "ISO 4217 currency code (e.g., USD, EUR, JPY)."
+            },
+            { "type": "null" }
+          ],
+          "description": "Required when type=paid; null otherwise."
+        }
+      },
+      "allOf": [
+        {
+          "type": "object",
+          "if": {
+            "type": "object",
+            "properties": { "type": { "const": "paid" } },
+            "required": ["type"]
+          },
+          "then": {
+            "type": "object",
+            "required": ["amount_cents", "currency"],
+            "properties": {
+              "amount_cents": { "type": "integer" },
+              "currency": { "type": "string" }
+            }
+          }
+        }
+      ]
+    },
+    "monetization": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tips_enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Opt-in to receive tips on this drop. Requires author Stripe Connect."
+        },
+        "stripe_account": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^acct_[a-zA-Z0-9]+$"
+            },
+            { "type": "null" }
+          ],
+          "description": "Stripe Connect account id. Filled by SDK after creator OAuth."
+        },
+        "payout_currency": {
+          "type": "string",
+          "pattern": "^[a-z]{3}$",
+          "default": "usd",
+          "description": "ISO 4217 currency code (lowercase, Stripe convention)."
+        },
+        "refund_window_days": {
+          "type": "integer",
+          "minimum": 7,
+          "maximum": 30,
+          "default": 7,
+          "description": "Creator-set 7-30. Only meaningful for paid drops."
+        }
+      }
+    },
+    "royalty": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "forks_inherit_price": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether forks of paid drops inherit the parent's price."
+        },
+        "fork_revenue_share_pct": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 50,
+          "description": "Percent of paid-fork sales paid to the original author. Default 50."
+        }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "required": ["algorithm", "signer", "signed_at", "signed_digest", "signature"],
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "const": "ES256",
+          "description": "v1 supports ES256 only."
+        },
+        "signer": {
+          "type": "object",
+          "required": ["passport"],
+          "additionalProperties": false,
+          "properties": {
+            "passport": { "$ref": "#/$defs/passport" },
+            "integrity_band": {
+              "type": "string",
+              "enum": ["critical", "poor", "fair", "good", "exceptional"],
+              "description": "Snapshot of signer's Eternitas integrity band at signing time. Snapshot only — registry does NOT update later."
+            },
+            "clearance_level": {
+              "type": "string",
+              "enum": ["registered", "verified", "cleared", "top_secret", "eternal"],
+              "description": "Snapshot of signer's Eternitas clearance level."
+            }
+          }
+        },
+        "signed_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "RFC 3339 timestamp."
+        },
+        "signed_digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "description": "sha256(canonical_manifest_sans_signature || bundle_sha256_hex)."
+        },
+        "signature": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9+/]+={0,2}$",
+          "description": "Base64-encoded raw ES256 signature (R||S, 64 bytes → 88 chars base64)."
+        }
+      }
+    },
+    "controlPanelExtension": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "refresh_interval_ms": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 3600000,
+          "default": 5000,
+          "description": "How often the template requests fresh Vitals payloads."
+        },
+        "supports_remote_fleet": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether this template renders the per-agent fleet panel."
+        }
+      }
+    }
+  }
+}

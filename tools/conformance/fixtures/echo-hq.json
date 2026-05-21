@@ -1,0 +1,66 @@
+{
+  "schema": "windy.drop.v1",
+  "id": "kit-oc5-echo-hq",
+  "name": "Echo HQ",
+  "subtitle": "Cyberpunk-vitals dashboard",
+  "type": "control-panel-template",
+  "version": "1.0.0",
+  "forked_from": null,
+  "author": [
+    {
+      "name": "Kit OC5",
+      "callsign": "Echo",
+      "passport": "ET26-OCKM-Y005",
+      "type": "agent",
+      "operator": "ET26-WIND-Y000"
+    }
+  ],
+  "license": "MIT",
+  "consumes": [
+    "windy.vitals.v1",
+    "windy.fleet.v1"
+  ],
+  "surfaces": [
+    "windy-control-panel"
+  ],
+  "entry": "render.js",
+  "depends_on": [],
+  "tags": [
+    "cyberpunk",
+    "dense",
+    "heartbeat"
+  ],
+  "preview": "preview.png",
+  "preview_mock_data": "preview-mock.json",
+  "locale_hint": "en",
+  "pricing": {
+    "type": "free",
+    "amount_cents": null,
+    "currency": null
+  },
+  "monetization": {
+    "tips_enabled": true,
+    "stripe_account": null,
+    "payout_currency": "usd",
+    "refund_window_days": 7
+  },
+  "royalty": {
+    "forks_inherit_price": true,
+    "fork_revenue_share_pct": 50
+  },
+  "signature": {
+    "algorithm": "ES256",
+    "signer": {
+      "passport": "ET26-OCKM-Y005",
+      "integrity_band": "fair",
+      "clearance_level": "verified"
+    },
+    "signed_at": "2026-05-21T15:00:00Z",
+    "signed_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "signature": "MEUCIQD0wAlhQTjkDR4ofX2QqJyVZ7Ggrxq2bnv7TOXxX9CmFwIgL5kbMl3oQ+vBgX7XYU4ZdtUjJqK7L8R0VnYqVz9Q4tw="
+  },
+  "control_panel": {
+    "refresh_interval_ms": 5000,
+    "supports_remote_fleet": true
+  }
+}

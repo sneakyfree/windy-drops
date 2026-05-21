@@ -395,8 +395,8 @@ The four strands in Phase A produce the source of truth (JSON Schema) and the tw
 ### WD-0: Canonical JSON Schema
 
 **Phase:** A
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** —
 **Blocks:** WD-1, WD-2, WD-3, WD-4 through WD-11, WD-18, WD-24
 
