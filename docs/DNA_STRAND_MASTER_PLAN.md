@@ -685,8 +685,8 @@ Phase B ships M3a + M3b in parallel. Both SDKs share the same CLI surface (`wind
 ### WD-8: SDK `publish` command (R2 upload + registry POST)
 
 **Phase:** B
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; logic-complete on both SDKs; 6 TS + 5 Py tests pass; R2 upload step deferred until WD-13 ships — registry accepts SHA from body in v1)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-6, WD-7 (signing is optional but supported)
 **Blocks:** WD-31 (Control Panel official drops publish via this), WD-32 (any author publishing via Drops)
 

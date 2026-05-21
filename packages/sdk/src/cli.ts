@@ -82,12 +82,32 @@ program
 
 program
   .command("publish")
-  .description("Validate, bundle, sign, upload to R2, POST to registry (WD-8)")
+  .description("Validate, bundle, then POST to the registry")
   .argument("<path>", "drop directory")
-  .action(async () => {
-    console.error("publish: not yet implemented (WD-8)");
-    process.exit(2);
-  });
+  .option("--registry-url <url>", "registry base URL (defaults to https://api.windydrops.com)")
+  .option("--token <jwt>", "Bearer token (defaults to $WINDY_REGISTRY_TOKEN)")
+  .option("--bundle-url <url>", "override the public bundle URL recorded in the registry")
+  .option("--dry-run", "print payload + exit (no upload, no POST)")
+  .action(
+    async (
+      path: string,
+      opts: {
+        registryUrl?: string;
+        token?: string;
+        bundleUrl?: string;
+        dryRun?: boolean;
+      },
+    ) => {
+      const { run } = await import("./commands/publish.js");
+      await run({
+        path,
+        registryUrl: opts.registryUrl,
+        bearerToken: opts.token,
+        bundleUrl: opts.bundleUrl,
+        dryRun: opts.dryRun,
+      });
+    },
+  );
 
 program
   .command("withdraw")

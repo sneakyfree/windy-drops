@@ -10,6 +10,7 @@ import typer
 from .commands import bundle as bundle_cmd
 from .commands import fork as fork_cmd
 from .commands import new as new_cmd
+from .commands import publish as publish_cmd
 from .commands import sign as sign_cmd
 from .commands import validate as validate_cmd
 
@@ -46,22 +47,16 @@ def root(
     """Windy Drops CLI."""
 
 
-# Implemented (WD-4, 5, 6, 7, 10):
+# Implemented (WD-4, 5, 6, 7, 8, 10):
 app.command("new")(new_cmd.run)
 app.command("validate")(validate_cmd.run)
 app.command("bundle")(bundle_cmd.run)
 app.command("sign")(sign_cmd.run)
+app.command("publish")(publish_cmd.run)
 app.command("fork")(fork_cmd.run)
 
 
 # Stubs for later strands (server-blocked on Phase C registry):
-
-
-@app.command("publish")
-def publish_stub(path: str) -> None:
-    """Validate, bundle, sign, upload to R2, POST to registry (WD-8)."""
-    typer.echo("publish: not yet implemented (WD-8 — needs registry)", err=True)
-    raise typer.Exit(code=2)
 
 
 @app.command("withdraw")
