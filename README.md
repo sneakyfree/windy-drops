@@ -14,13 +14,18 @@ Drops are not apps. They're not skills only. They're not dashboards only. They'r
 
 This repo holds:
 
-- **`packages/artifact-spec/`** — the canonical manifest format (SKILL.md + YAML frontmatter, aligned with [agentskills.io](https://agentskills.io)) that every drop implements. Frozen v1, versioned forward.
-- **`packages/sdk/`** — `@windy/drops-sdk` — what drop authors `npm install` to build + sign + publish their content.
+- **`schemas/`** — canonical JSON Schema for `windy.drop.v1`. Source of truth; both language SDKs codegen from here.
+- **`packages/artifact-spec/`** — TypeScript bindings (`@windy/drops-artifact-spec` on npm) generated from `schemas/`.
+- **`packages/sdk/`** — TypeScript SDK (`@windy/drops-sdk` on npm) — `npm install` to publish drops.
+- **`python/artifact-spec/`** — Python bindings (`windy_drops_spec` on PyPI; Pydantic v2 from same JSON Schema).
+- **`python/sdk/`** — Python SDK (`windy-drops` on PyPI) — `pip install` to publish drops.
 - **`docs/`** — the substrate ADRs, authoring guide, versioning policy.
-- **`examples/`** — copy-paste scaffolds for new drop authors.
-- **`tools/`** — bundle build + manifest verification + R2 upload helpers.
+- **`examples/`** — copy-paste scaffolds for new drop authors (one per drop type).
+- **`tools/`** — bundle conformance tests + R2 upload helpers + cross-SDK byte-identity verification.
 
-The registry service (search, trending, install API, user libraries) lives separately in `sneakyfree/windy-registry`. Per-surface host code (Control Panel, Fly skill picker, etc.) lives in each surface's own repo.
+**Polyglot by design.** Both Python and TypeScript SDKs are first-class — neither is the "canonical" implementation. A drop published from `pip install windy-drops` is byte-identical to one published from `npm install -g @windy/drops-sdk`. See ADR-053 §"Language bindings policy."
+
+The registry service (search, trending, install API, user libraries) lives separately in `sneakyfree/windy-registry` (FastAPI + Postgres + R2). Per-surface host code (Control Panel, Fly skill picker, etc.) lives in each surface's own repo.
 
 ## How a drop reaches a user
 
