@@ -1103,8 +1103,8 @@ CREATE TABLE forks (
 ### WD-18: Publish endpoint + signature verification + duplicate-id guard
 
 **Phase:** C
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; 8/8 tests; full publish→verify→persist flow; logic-complete pending R2 provisioning (WD-13) for end-to-end ship)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-13, WD-14, WD-15
 **Blocks:** v1 ship (criterion #7 — external contributor publishes)
 
