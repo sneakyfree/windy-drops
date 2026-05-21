@@ -1603,8 +1603,8 @@ Phase F wires up the first consumer surfaces (Control Panel per ADR-054, Chat tr
 ### WD-31: windy-control-panel repo bootstrap + Vitals/Fleet protocols + SDK host loader (full ADR-054)
 
 **Phase:** F
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** in-progress (M-A done 2026-05-21 — Claude Opus 4.7; repo at sneakyfree/windy-control-panel with monorepo skeleton + ADR-054 milestone tracker. M-B through M-H pending — ~7 working days estimated per ADR-054)
+**Owner:** Claude Opus 4.7 (1M context, M-A only)
 **Depends on:** WD-1 (TS bindings for manifest typing), WD-8 (publish official drops via SDK), WD-17 (library lookup)
 **Blocks:** ADR-054 acceptance criteria
 
@@ -1647,8 +1647,8 @@ This strand is shorthand for **ADR-054 milestones M-A through M-H** combined int
 ### WD-32: Windy Chat trending feed subscriber + Drops tab UI
 
 **Phase:** F
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done — spec + sample (2026-05-21 — Claude Opus 4.7; docs/integrations/windy-chat.md + tools/webhook-subscriber-sample.py in sneakyfree/windy-registry. Actual windy-chat repo wire-up happens in a follow-up session since chat is live production)
+**Owner:** Claude Opus 4.7 (1M context, spec only)
 **Depends on:** WD-16, WD-21 (subscribes via webhook substrate)
 **Blocks:** —
 
