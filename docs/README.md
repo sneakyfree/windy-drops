@@ -11,7 +11,7 @@ This directory will hold:
 
 Canonical ADRs live in [`sneakyfree/kit-army-config/docs/`](https://github.com/sneakyfree/kit-army-config/tree/main/docs):
 
-- **ADR-053** — Windy Drops Substrate v1 (pending)
-- **ADR-054** — Control Panel Substrate v1 (pending)
+- **[ADR-053](https://github.com/sneakyfree/kit-army-config/blob/main/docs/adr-053-windy-drops-substrate-v1.md)** — Windy Drops Substrate v1 (Proposed 2026-05-21)
+- **[ADR-054](https://github.com/sneakyfree/kit-army-config/blob/main/docs/adr-054-control-panel-substrate-v1.md)** — Control Panel Substrate v1 (Proposed 2026-05-21)
 
 Once accepted, those ADRs will be mirrored here as `adr-053-substrate.md` and `adr-054-control-panel.md` for easy access from the SDK.
