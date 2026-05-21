@@ -57,3 +57,33 @@ jobs:
           uv venv
           uv pip install -e .[test]
           .venv/bin/pytest tests/ -v
+
+  ts-sdk:
+    name: ts-sdk (@windy/drops-sdk)
+    runs-on: ubuntu-latest
+    needs: ts-bindings
+    defaults:
+      run:
+        working-directory: packages/sdk
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - run: npm install
+        working-directory: .
+      - run: npm run build
+      - run: npm test
+
+  py-sdk:
+    name: py-sdk (windy-drops)
+    runs-on: ubuntu-latest
+    needs: py-bindings
+    defaults:
+      run:
+        working-directory: python/sdk
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv venv
+      - run: uv pip install -e ../artifact-spec -e .[test]
+      - run: .venv/bin/pytest tests/ -v

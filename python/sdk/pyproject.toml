@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "windy-drops"
+version = "0.1.0"
+description = "Python SDK + CLI for publishing drops to the Windy Drops registry. WD-4..WD-10 of DNA_STRAND_MASTER_PLAN.md."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+authors = [
+    { name = "Windy Drops contributors" },
+]
+keywords = ["windy", "drops", "marketplace", "skill", "cli"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Environment :: Console",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Code Generators",
+]
+dependencies = [
+    "typer>=0.12",
+    "pyyaml>=6.0",
+    "windy-drops-spec>=0.1",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8",
+]
+
+[project.scripts]
+windy-drops = "windy_drops.cli:app"
+
+[project.urls]
+Homepage = "https://windydrops.com"
+Repository = "https://github.com/sneakyfree/windy-drops"
+Issues = "https://github.com/sneakyfree/windy-drops/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/windy_drops"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

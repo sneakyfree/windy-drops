@@ -544,8 +544,8 @@ Phase B ships M3a + M3b in parallel. Both SDKs share the same CLI surface (`wind
 ### WD-4: SDK monorepo scaffold + `new` command
 
 **Phase:** B
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-1, WD-2, WD-3
 **Blocks:** WD-5, WD-6, WD-7, WD-8, WD-9, WD-10
 

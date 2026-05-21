@@ -1,0 +1,11 @@
+/* theme.css — starter theme. Override surfaces' CSS variables here. */
+
+@layer windy-theme {
+  :root {
+    --windy-bg: #0a0e14;
+    --windy-fg: #f0f6fc;
+    --windy-accent: #00d4ff;
+    --windy-radius: 8px;
+    --windy-font: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+}

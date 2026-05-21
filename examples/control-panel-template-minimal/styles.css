@@ -1,0 +1,25 @@
+/* styles.css — base styling for the starter Control Panel template. */
+
+:root {
+  color-scheme: dark;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  background: #0a0e14;
+  color: #f0f6fc;
+}
+
+body {
+  margin: 0;
+  padding: 1.5rem;
+}
+
+h1 {
+  margin: 0 0 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin: 0.25rem 0;
+  font-variant-numeric: tabular-nums;
+}

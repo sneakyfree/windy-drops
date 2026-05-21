@@ -10,8 +10,7 @@
   },
   "license": "MIT",
   "workspaces": [
-    "packages/*",
-    "examples/*"
+    "packages/*"
   ],
   "scripts": {
     "lint": "echo 'lint not yet wired'",

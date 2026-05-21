@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+// windy-drops CLI shim. Launches the compiled CLI entry point.
+// WD-4 of DNA_STRAND_MASTER_PLAN.md.
+
+import("../dist/cli.js").catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
