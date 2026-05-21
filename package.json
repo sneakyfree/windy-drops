@@ -1,0 +1,21 @@
+{
+  "name": "windy-drops",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Windy Drops — the open marketplace for the Windy ecosystem",
+  "homepage": "https://windydrops.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sneakyfree/windy-drops.git"
+  },
+  "license": "MIT",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "lint": "echo 'lint not yet wired'",
+    "test": "echo 'tests not yet wired'",
+    "build": "echo 'build not yet wired'"
+  }
+}
