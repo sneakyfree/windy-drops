@@ -1423,8 +1423,8 @@ Phase D ships M5 (sandbox + share URL pieces) and M8 (marketplace UI). The Petri
 ### WD-26: Marketplace UI (windy-drops-site browse + search + author pages + fork lineage)
 
 **Phase:** D
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; MVP — /browse with filter chips + search, /@<handle> profile via CF Pages Function, /me/library + /me/payouts stubs; full integrate-button flow + Pro JWT login is a follow-up tied to windypro account-server gaining the drops audience)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-16, WD-19, WD-23, WD-24, WD-25
 **Blocks:** —
 
