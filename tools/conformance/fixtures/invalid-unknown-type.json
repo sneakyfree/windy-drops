@@ -1,0 +1,9 @@
+{
+  "schema": "windy.drop.v1",
+  "id": "not-a-real-type-test",
+  "name": "Bad Type",
+  "type": "not-a-real-type",
+  "version": "1.0.0",
+  "author": [{"name": "Tester"}],
+  "license": "MIT"
+}

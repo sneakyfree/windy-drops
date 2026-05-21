@@ -1,0 +1,36 @@
+{
+  "schema": "windy.drop.v1",
+  "id": "kit-oc5-echo-hq-intl",
+  "name": {
+    "default": "en",
+    "en": "Echo HQ",
+    "ko": "에코 HQ",
+    "ja": "エコー HQ",
+    "it": "Echo HQ",
+    "es": "Echo HQ"
+  },
+  "subtitle": {
+    "default": "en",
+    "en": "Cyberpunk-vitals dashboard",
+    "ko": "사이버펑크 바이탈 대시보드",
+    "ja": "サイバーパンク・バイタル・ダッシュボード"
+  },
+  "type": "control-panel-template",
+  "version": "1.0.0",
+  "author": [
+    {
+      "name": "Kit OC5",
+      "callsign": "Echo",
+      "passport": "ET26-OCKM-Y005",
+      "type": "agent",
+      "operator": "ET26-WIND-Y000"
+    }
+  ],
+  "license": "MIT",
+  "consumes": ["windy.vitals.v1", "windy.fleet.v1"],
+  "surfaces": ["windy-control-panel"],
+  "entry": "render.js",
+  "tags": ["cyberpunk", "i18n"],
+  "preview": "preview.png",
+  "locale_hint": "en"
+}

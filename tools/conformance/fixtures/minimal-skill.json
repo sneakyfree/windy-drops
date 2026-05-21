@@ -1,0 +1,13 @@
+{
+  "schema": "windy.drop.v1",
+  "id": "ada-find-apartments-nyc",
+  "name": "Find apartments in NYC",
+  "type": "skill",
+  "version": "0.1.0",
+  "author": [
+    {
+      "name": "Ada"
+    }
+  ],
+  "license": "MIT"
+}

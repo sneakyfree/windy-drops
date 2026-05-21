@@ -1,0 +1,15 @@
+{
+  "schema": "windy.drop.v1",
+  "id": "agent-author-missing-operator",
+  "name": "Agent Drop No Operator",
+  "type": "skill",
+  "version": "1.0.0",
+  "author": [
+    {
+      "name": "Some Agent",
+      "passport": "ET26-AAAA-AAAA",
+      "type": "agent"
+    }
+  ],
+  "license": "MIT"
+}

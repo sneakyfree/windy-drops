@@ -10,38 +10,7 @@
 import { z } from "zod"
 
 export const DropManifestSchema = z.object({ "schema": z.literal("windy.drop.v1").describe("Self-identifying version of the manifest format. Consumers MUST reject majors they do not understand."), "id": z.string().regex(new RegExp("^[a-z0-9]+(-[a-z0-9]+)*$")).min(1).max(128).describe("Stable globally-unique slug. Case-sensitive, kebab-case. Convention: <author-slug>-<drop-slug>."), "name": z.any().superRefine((x, ctx) => {
-    const schemas = [z.string().min(1).max(200), z.object({ "default": z.string().regex(new RegExp("^[a-z]{2,3}(-[A-Z][a-z]{3})?(-[A-Z]{2}|-[0-9]{3})?$")).describe("BCP 47 locale tag pointing to the canonical fallback key in this object.") }).catchall(z.union([z.string().min(1).max(200), z.never()])).superRefine((value, ctx) => {
-for (const key in value) {
-let evaluated = ["default"].includes(key)
-if (key.match(new RegExp("^[a-z]{2,3}(-[A-Z][a-z]{3})?(-[A-Z]{2}|-[0-9]{3})?$"))) {
-evaluated = true
-const result = z.string().min(1).max(200).safeParse(value[key])
-if (!result.success) {
-ctx.addIssue({
-          path: [...ctx.path, key],
-          code: 'custom',
-          message: `Invalid input: Key matching regex /${key}/ must match schema`,
-          params: {
-            issues: result.error.issues
-          }
-        })
-}
-}
-if (!evaluated) {
-const result = z.never().safeParse(value[key])
-if (!result.success) {
-ctx.addIssue({
-          path: [...ctx.path, key],
-          code: 'custom',
-          message: `Invalid input: must match catchall schema`,
-          params: {
-            issues: result.error.issues
-          }
-        })
-}
-}
-}
-})];
+    const schemas = [z.string().min(1).max(200), z.object({ "default": z.string().regex(new RegExp("^[a-z]{2,3}(-[A-Z][a-z]{3})?(-[A-Z]{2}|-[0-9]{3})?$")).describe("BCP 47 locale tag pointing to the canonical fallback key in this object.") }).catchall(z.string().min(1).max(200).describe("Per-locale translation. Key SHOULD be a BCP 47 locale tag; non-BCP-47 keys are tolerated by binding but ignored by surfaces."))];
     const { errors, failed } = schemas.reduce<{
       errors: z.ZodError[];
       failed: number;
@@ -72,38 +41,7 @@ ctx.addIssue({
       });
     }
   }).describe("Display name. Plain UTF-8 string OR i18n object with a 'default' locale pointer."), "subtitle": z.any().superRefine((x, ctx) => {
-    const schemas = [z.string().min(1).max(200), z.object({ "default": z.string().regex(new RegExp("^[a-z]{2,3}(-[A-Z][a-z]{3})?(-[A-Z]{2}|-[0-9]{3})?$")).describe("BCP 47 locale tag pointing to the canonical fallback key in this object.") }).catchall(z.union([z.string().min(1).max(200), z.never()])).superRefine((value, ctx) => {
-for (const key in value) {
-let evaluated = ["default"].includes(key)
-if (key.match(new RegExp("^[a-z]{2,3}(-[A-Z][a-z]{3})?(-[A-Z]{2}|-[0-9]{3})?$"))) {
-evaluated = true
-const result = z.string().min(1).max(200).safeParse(value[key])
-if (!result.success) {
-ctx.addIssue({
-          path: [...ctx.path, key],
-          code: 'custom',
-          message: `Invalid input: Key matching regex /${key}/ must match schema`,
-          params: {
-            issues: result.error.issues
-          }
-        })
-}
-}
-if (!evaluated) {
-const result = z.never().safeParse(value[key])
-if (!result.success) {
-ctx.addIssue({
-          path: [...ctx.path, key],
-          code: 'custom',
-          message: `Invalid input: must match catchall schema`,
-          params: {
-            issues: result.error.issues
-          }
-        })
-}
-}
-}
-})];
+    const schemas = [z.string().min(1).max(200), z.object({ "default": z.string().regex(new RegExp("^[a-z]{2,3}(-[A-Z][a-z]{3})?(-[A-Z]{2}|-[0-9]{3})?$")).describe("BCP 47 locale tag pointing to the canonical fallback key in this object.") }).catchall(z.string().min(1).max(200).describe("Per-locale translation. Key SHOULD be a BCP 47 locale tag; non-BCP-47 keys are tolerated by binding but ignored by surfaces."))];
     const { errors, failed } = schemas.reduce<{
       errors: z.ZodError[];
       failed: number;

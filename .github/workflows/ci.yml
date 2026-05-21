@@ -1,0 +1,59 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  schema:
+    name: schema (ajv + jsonschema)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python -m pip install --upgrade pip jsonschema
+      - run: bash tools/conformance/run.sh
+
+  ts-bindings:
+    name: ts-bindings (@windy/drops-artifact-spec)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/artifact-spec
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - run: npm install
+      - run: npm run codegen:check
+      - run: npm run build
+      - run: npm test
+
+  py-bindings:
+    name: py-bindings (windy-drops-spec)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python/artifact-spec
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - name: Regenerate + staleness check
+        run: |
+          uvx --with datamodel-code-generator python codegen.py
+          git diff --exit-code -- src/windy_drops_spec/_generated.py
+      - name: Build wheel + sdist
+        run: uv build
+      - name: Install + test
+        run: |
+          uv venv
+          uv pip install -e .[test]
+          .venv/bin/pytest tests/ -v

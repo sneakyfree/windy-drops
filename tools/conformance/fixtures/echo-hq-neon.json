@@ -1,0 +1,55 @@
+{
+  "schema": "windy.drop.v1",
+  "id": "thewindstorm-echo-hq-neon",
+  "name": "Echo HQ Neon",
+  "subtitle": "Cyberpunk-vitals, retuned with neon hues",
+  "type": "control-panel-template",
+  "version": "1.0.0",
+  "forked_from": "kit-oc5-echo-hq",
+  "author": [
+    {
+      "name": "Grant Whitmer",
+      "callsign": "TheWindstorm",
+      "passport": "EH26-WIND-Y000",
+      "type": "human"
+    }
+  ],
+  "license": "MIT",
+  "consumes": [
+    "windy.vitals.v1",
+    "windy.fleet.v1"
+  ],
+  "surfaces": [
+    "windy-control-panel"
+  ],
+  "entry": "render.js",
+  "depends_on": [],
+  "tags": [
+    "cyberpunk",
+    "neon",
+    "dense",
+    "heartbeat"
+  ],
+  "preview": "preview.png",
+  "preview_mock_data": "preview-mock.json",
+  "locale_hint": "en",
+  "pricing": {
+    "type": "free",
+    "amount_cents": null,
+    "currency": null
+  },
+  "monetization": {
+    "tips_enabled": false,
+    "stripe_account": null,
+    "payout_currency": "usd",
+    "refund_window_days": 7
+  },
+  "royalty": {
+    "forks_inherit_price": true,
+    "fork_revenue_share_pct": 50
+  },
+  "control_panel": {
+    "refresh_interval_ms": 5000,
+    "supports_remote_fleet": true
+  }
+}

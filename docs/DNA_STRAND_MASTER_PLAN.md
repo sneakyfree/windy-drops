@@ -499,8 +499,8 @@ The four strands in Phase A produce the source of truth (JSON Schema) and the tw
 ### WD-3: Conformance fixtures (golden manifests)
 
 **Phase:** A
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-0
 **Blocks:** WD-1 (CI), WD-2 (CI), WD-11 (byte-identity test)
 

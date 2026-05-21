@@ -1,0 +1,34 @@
+{
+  "schema": "windy.drop.v1",
+  "id": "ada-morning-triage",
+  "name": "Morning email triage",
+  "subtitle": "Auto-sort + summarize overnight email at 7am",
+  "type": "workflow",
+  "version": "1.2.0",
+  "author": [
+    {
+      "name": "Ada",
+      "passport": "EH26-ADAW-0001",
+      "type": "human"
+    }
+  ],
+  "license": "Apache-2.0",
+  "tags": ["productivity", "email", "morning"],
+  "preview": "preview.png",
+  "locale_hint": "en",
+  "pricing": {
+    "type": "tip-jar",
+    "amount_cents": null,
+    "currency": null
+  },
+  "monetization": {
+    "tips_enabled": true,
+    "stripe_account": "acct_1Nq8sB2eZvKYlo2C",
+    "payout_currency": "usd",
+    "refund_window_days": 7
+  },
+  "royalty": {
+    "forks_inherit_price": true,
+    "fork_revenue_share_pct": 50
+  }
+}

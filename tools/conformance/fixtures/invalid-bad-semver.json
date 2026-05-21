@@ -1,0 +1,9 @@
+{
+  "schema": "windy.drop.v1",
+  "id": "bad-semver",
+  "name": "Bad Semver",
+  "type": "skill",
+  "version": "not-semver",
+  "author": [{"name": "Tester"}],
+  "license": "MIT"
+}

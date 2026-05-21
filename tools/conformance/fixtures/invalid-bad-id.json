@@ -1,0 +1,9 @@
+{
+  "schema": "windy.drop.v1",
+  "id": "UPPERCASE-NOT-ALLOWED",
+  "name": "Bad ID",
+  "type": "skill",
+  "version": "1.0.0",
+  "author": [{"name": "Tester"}],
+  "license": "MIT"
+}
