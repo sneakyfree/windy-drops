@@ -988,8 +988,8 @@ CREATE TABLE forks (
 ### WD-15: Auth middleware (dual JWKS — Pro RS256 + Eternitas ES256)
 
 **Phase:** C
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; 9/9 tests pass; Pro-first, Eternitas fallback, 5-min JWKS cache; AuthUser includes passport/integrity_band/clearance_level per bundle-spec-v1 alignment)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-12
 **Blocks:** WD-16, WD-17, WD-18, WD-19, WD-20, WD-25, WD-27, WD-28 (all auth-gated endpoints)
 
