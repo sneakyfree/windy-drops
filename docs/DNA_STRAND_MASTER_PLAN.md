@@ -722,8 +722,8 @@ Phase B ships M3a + M3b in parallel. Both SDKs share the same CLI surface (`wind
 ### WD-9: SDK `withdraw` command
 
 **Phase:** B
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; --confirm-gated; both SDKs + server DELETE endpoint; 4 server + 3 TS + 2 Py tests)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-8
 **Blocks:** —
 
@@ -1026,8 +1026,8 @@ CREATE TABLE forks (
 ### WD-16: Browse + search + single-drop + trending endpoints
 
 **Phase:** C
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; GET /drops + /drops/{id} + /drops/trending + /well-known/r2-config; v1 trending = install + 0.5*fork; 8/8 tests)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-14, WD-15
 **Blocks:** WD-26 (marketplace UI), WD-32 (Chat trending feed)
 
@@ -1065,8 +1065,8 @@ CREATE TABLE forks (
 ### WD-17: User library endpoints (install / uninstall / list)
 
 **Phase:** C
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; POST /me/library/install + /uninstall; GET /me/library; 402 on paid drops; 410 on withdrawn; 9/9 tests; emits drop.installed webhook)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-14, WD-15
 **Blocks:** WD-31 (Control Panel queries this), WD-32 (Chat trending shows installed state)
 
@@ -1145,8 +1145,8 @@ CREATE TABLE forks (
 ### WD-19: Fork endpoint + lineage chain persistence
 
 **Phase:** C
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; POST /drops/{id}/fork + GET /drops/{id}/forks; collision + withdrawn rejection; 7/7 tests)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-14, WD-15, WD-18 (publish creates the forked drop)
 **Blocks:** v1 ship (criterion #9 — fork lineage end-to-end)
 
@@ -1180,8 +1180,8 @@ CREATE TABLE forks (
 ### WD-20: Rating + review endpoints + aggregations
 
 **Phase:** C
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; POST upsert + GET aggregate; Bayesian smoothing (prior 3.5, min_count 5) + histogram; 6/6 tests)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-14, WD-15
 **Blocks:** WD-26 (marketplace UI shows ratings); part of trending score (WD-16)
 
@@ -1215,8 +1215,8 @@ CREATE TABLE forks (
 ### WD-21: Webhook substrate (subscribe + emit + HMAC-SHA256 + retry)
 
 **Phase:** C
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; subscribe + emit on publish + install; HMAC-SHA256 per AUDIT_2026-05-21 Gap #3; in-process dispatch v1 (out-of-band queue in v1.1); 8/8 tests)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-14, WD-15
 **Blocks:** WD-28 (Stripe webhook receiver uses same dispatcher), WD-32 (Chat subscribes via this)
 
