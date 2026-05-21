@@ -9,6 +9,7 @@ import typer
 
 from .commands import bundle as bundle_cmd
 from .commands import new as new_cmd
+from .commands import sign as sign_cmd
 from .commands import validate as validate_cmd
 
 app = typer.Typer(
@@ -44,21 +45,15 @@ def root(
     """Windy Drops CLI."""
 
 
-# new (WD-4), validate (WD-5), bundle (WD-6) are fully implemented.
+# new (WD-4), validate (WD-5), bundle (WD-6), sign (WD-7) are implemented.
 app.command("new")(new_cmd.run)
 app.command("validate")(validate_cmd.run)
 app.command("bundle")(bundle_cmd.run)
+app.command("sign")(sign_cmd.run)
 
 
 # Stubs for later strands. They exit non-zero with a clear message until
 # their owning strand lands.
-
-
-@app.command("sign")
-def sign_stub(path: str) -> None:
-    """Sign the manifest with the author's Eternitas Passport (WD-7)."""
-    typer.echo("sign: not yet implemented (WD-7)", err=True)
-    raise typer.Exit(code=2)
 
 
 @app.command("publish")

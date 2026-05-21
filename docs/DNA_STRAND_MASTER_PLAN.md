@@ -651,8 +651,8 @@ Phase B ships M3a + M3b in parallel. Both SDKs share the same CLI surface (`wind
 ### WD-7: SDK `sign` command (Eternitas ES256)
 
 **Phase:** B
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-5, WD-6
 **Blocks:** WD-8 (publish flows `sign` → upload), WD-18 (registry-side verify)
 

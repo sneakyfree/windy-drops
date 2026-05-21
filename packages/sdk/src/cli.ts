@@ -53,12 +53,32 @@ program
 
 program
   .command("sign")
-  .description("Sign the manifest with the author's Eternitas Passport (WD-7)")
+  .description("Sign the manifest with the author's Eternitas Passport (ES256)")
   .argument("<path>", "drop directory")
-  .action(async () => {
-    console.error("sign: not yet implemented (WD-7)");
-    process.exit(2);
-  });
+  .option("--key <pem-path>", "explicit path to EC P-256 private key PEM")
+  .option("--passport <id>", "Eternitas passport id (overrides credentials.json)")
+  .option("--integrity-band <band>", "snapshot integrity band (critical|poor|fair|good|exceptional)")
+  .option("--clearance-level <level>", "snapshot clearance level")
+  .action(
+    async (
+      path: string,
+      opts: {
+        key?: string;
+        passport?: string;
+        integrityBand?: string;
+        clearanceLevel?: string;
+      },
+    ) => {
+      const { run } = await import("./commands/sign.js");
+      await run({
+        path,
+        keyPath: opts.key,
+        passport: opts.passport,
+        integrityBand: opts.integrityBand,
+        clearanceLevel: opts.clearanceLevel,
+      });
+    },
+  );
 
 program
   .command("publish")
