@@ -29,6 +29,19 @@ export class RegistryError extends Error {
   }
 }
 
+/** Look up a drop by id. Returns null on 404; throws RegistryError otherwise. */
+export async function fetchDrop(
+  opts: { registryUrl: string; dropId: string },
+): Promise<Record<string, unknown> | null> {
+  const url = `${opts.registryUrl}/api/v1/drops/${encodeURIComponent(opts.dropId)}`;
+  const r = await fetch(url);
+  if (r.status === 404) return null;
+  if (!r.ok) {
+    throw new RegistryError(`registry GET drop: ${r.status}`, r.status, await r.text());
+  }
+  return (await r.json()) as Record<string, unknown>;
+}
+
 export function resolveRegistryUrl(opts: { registryUrl?: string } = {}): string {
   return (
     opts.registryUrl ||

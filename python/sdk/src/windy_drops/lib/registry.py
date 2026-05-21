@@ -30,6 +30,17 @@ class RegistryError(RuntimeError):
         self.body = body
 
 
+def fetch_drop(*, registry_url: str, drop_id: str) -> dict[str, Any] | None:
+    """Look up a drop by id. Returns None on 404; raises RegistryError otherwise."""
+    url = f"{registry_url}/api/v1/drops/{drop_id}"
+    r = httpx.get(url, timeout=15.0)
+    if r.status_code == 404:
+        return None
+    if r.status_code >= 400:
+        raise RegistryError(f"registry GET drop: {r.status_code}", r.status_code, r.text)
+    return r.json()
+
+
 def resolve_registry_url(*, registry_url: str | None = None) -> str:
     return (
         (registry_url or os.environ.get("WINDY_REGISTRY_URL") or "https://api.windydrops.com")

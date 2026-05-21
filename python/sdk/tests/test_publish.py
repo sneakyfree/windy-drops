@@ -127,3 +127,28 @@ def test_publish_to_registry_raises_on_4xx(monkeypatch: pytest.MonkeyPatch) -> N
         )
     assert exc_info.value.status == 409
     assert exc_info.value.body == {"detail": {"error": "version_already_published"}}
+
+
+# F15 dependency: fetch_drop() helper exists + handles 404 / 200 / 5xx
+def test_fetch_drop_returns_none_on_404(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(httpx, "get", lambda url, **_: httpx.Response(404))
+    from windy_drops.lib.registry import fetch_drop
+    assert fetch_drop(registry_url="https://api", drop_id="x") is None
+
+
+def test_fetch_drop_returns_dict_on_200(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(
+        httpx, "get",
+        lambda url, **_: httpx.Response(200, json={"id": "x", "withdrawn_at": None}),
+    )
+    from windy_drops.lib.registry import fetch_drop
+    body = fetch_drop(registry_url="https://api", drop_id="x")
+    assert body == {"id": "x", "withdrawn_at": None}
+
+
+def test_fetch_drop_raises_on_5xx(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(httpx, "get", lambda url, **_: httpx.Response(500, text="boom"))
+    from windy_drops.lib.registry import RegistryError, fetch_drop
+    with pytest.raises(RegistryError) as exc:
+        fetch_drop(registry_url="https://api", drop_id="x")
+    assert exc.value.status == 500

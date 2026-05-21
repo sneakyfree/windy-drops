@@ -8,7 +8,12 @@ import sys
 
 import typer
 
-from ..lib.registry import RegistryError, publish_to_registry, resolve_registry_url
+from ..lib.registry import (
+    RegistryError,
+    fetch_drop,
+    publish_to_registry,
+    resolve_registry_url,
+)
 from ..lib.skill_md import read_skill_md
 from .bundle import bundle as do_bundle
 
@@ -21,6 +26,7 @@ def run(
     token: str | None = typer.Option(None, "--token"),
     bundle_url: str | None = typer.Option(None, "--bundle-url"),
     dry_run: bool = typer.Option(False, "--dry-run"),
+    force: bool = typer.Option(False, "--force", help="bypass withdrawn-state pre-check"),
 ) -> None:
     """Validate, bundle, then POST to the registry."""
     try:
@@ -43,6 +49,25 @@ def run(
             typer.echo(f"dry-run would POST to {resolve_registry_url(registry_url=registry_url)}/api/v1/drops:")
             typer.echo(json.dumps(payload, indent=2, ensure_ascii=False))
             raise typer.Exit(code=0)
+
+        # F15: probe withdrawn_at before publish. --force bypasses.
+        # Network errors during the probe shouldn't block publish — proceed silently.
+        if not force:
+            import httpx as _httpx
+            try:
+                existing = fetch_drop(
+                    registry_url=resolve_registry_url(registry_url=registry_url),
+                    drop_id=drop_id,
+                )
+                if existing and existing.get("withdrawn_at"):
+                    typer.echo(
+                        f"✗ drop '{drop_id}' is withdrawn (withdrawn_at={existing['withdrawn_at']}). "
+                        "Re-run with --force to re-publish a withdrawn id.",
+                        err=True,
+                    )
+                    raise typer.Exit(code=1)
+            except (RegistryError, _httpx.HTTPError, OSError):
+                pass
 
         bearer = token or os.environ.get("WINDY_REGISTRY_TOKEN")
         if not bearer:

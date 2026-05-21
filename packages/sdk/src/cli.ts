@@ -88,6 +88,7 @@ program
   .option("--token <jwt>", "Bearer token (defaults to $WINDY_REGISTRY_TOKEN)")
   .option("--bundle-url <url>", "override the public bundle URL recorded in the registry")
   .option("--dry-run", "print payload + exit (no upload, no POST)")
+  .option("--force", "bypass the withdrawn-state pre-check")
   .action(
     async (
       path: string,
@@ -96,6 +97,7 @@ program
         token?: string;
         bundleUrl?: string;
         dryRun?: boolean;
+        force?: boolean;
       },
     ) => {
       const { run } = await import("./commands/publish.js");
@@ -105,6 +107,7 @@ program
         bearerToken: opts.token,
         bundleUrl: opts.bundleUrl,
         dryRun: opts.dryRun,
+        force: opts.force,
       });
     },
   );

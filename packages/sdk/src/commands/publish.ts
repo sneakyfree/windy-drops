@@ -12,7 +12,7 @@ import { readFileSync } from "node:fs";
 import chalk from "../lib/chalk-shim.js";
 import { readSkillMd } from "../lib/skill-md.js";
 import { bundle as runBundle } from "./bundle.js";
-import { publishToRegistry, resolveRegistryUrl } from "../lib/registry.js";
+import { fetchDrop, publishToRegistry, resolveRegistryUrl } from "../lib/registry.js";
 
 export interface PublishOptions {
   path: string;
@@ -21,6 +21,8 @@ export interface PublishOptions {
   dryRun?: boolean;
   /** Optional override of the published bundle URL (defaults to drops.windydrops.com/<id>/<version>/...). */
   bundleUrl?: string;
+  /** F15: bypass the withdrawn-state pre-check (re-publish into a withdrawn id). */
+  force?: boolean;
 }
 
 const PUBLIC_BUNDLE_DOMAIN = "drops.windydrops.com";
@@ -47,6 +49,24 @@ export async function run(opts: PublishOptions): Promise<void> {
       process.stdout.write(`${chalk.cyan("dry-run")} would POST to ${resolveRegistryUrl(opts)}/api/v1/drops:\n`);
       process.stdout.write(JSON.stringify(payload, null, 2) + "\n");
       process.exit(0);
+    }
+
+    // F15: probe withdrawn_at before publishing. If the id was withdrawn
+    // and --force isn't set, refuse — re-publishing a withdrawn id is
+    // surprising behavior that should require explicit confirmation.
+    if (!opts.force) {
+      try {
+        const existing = await fetchDrop({ registryUrl: resolveRegistryUrl(opts), dropId: id });
+        if (existing && existing.withdrawn_at) {
+          throw new Error(
+            `drop '${id}' is currently withdrawn (withdrawn_at=${existing.withdrawn_at}). ` +
+            `Re-run with --force to re-publish a withdrawn id.`,
+          );
+        }
+      } catch (e) {
+        // Network errors during the probe shouldn't block publish — proceed.
+        if ((e as Error).message?.includes("withdrawn")) throw e;
+      }
     }
 
     const token = opts.bearerToken ?? process.env.WINDY_REGISTRY_TOKEN;
