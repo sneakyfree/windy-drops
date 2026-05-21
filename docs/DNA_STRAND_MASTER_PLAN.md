@@ -1298,8 +1298,8 @@ Phase D ships M5 (sandbox + share URL pieces) and M8 (marketplace UI). The Petri
 ### WD-23: Iframe sandbox host + postMessage protocol + mock data injection
 
 **Phase:** D
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; GET /api/v1/drops/{id}/preview returns sandbox HTML; sandbox=allow-scripts only; CSP locked; postMessage origin-locked to bundle domain; per-type mock injection; 6/6 tests; closes ADR-053 acceptance #10)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-13, WD-16
 **Blocks:** WD-24 (sandbox URL embedded on short URLs), WD-31 (Control Panel host loader reuses sandbox pattern)
 
