@@ -1257,8 +1257,8 @@ CREATE TABLE forks (
 ### WD-22: Postgres backup (MF4) + restore drill
 
 **Phase:** C
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; deploy/backup/{pg_backup.sh, .service, .timer, lifecycle.json} + docs/runbooks/backup-restore.md; mirrors eternitas MF4 03:06 UTC cadence; install steps documented; awaits one-time AWS CLI run at first prod deploy)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-12, WD-14
 **Blocks:** —
 
