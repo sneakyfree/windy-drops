@@ -908,8 +908,8 @@ The registry is the core service: it indexes drops, validates publishes, serves 
 ### WD-14: Postgres schema + Alembic (reversible migrations)
 
 **Phase:** C
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; 12 SQLAlchemy 2.0 models in windy-registry; alembic 0001 renders 175 lines clean DDL; 16/16 tests pass; pgvector reserved)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-12
 **Blocks:** WD-15+ (all data-touching strands)
 
