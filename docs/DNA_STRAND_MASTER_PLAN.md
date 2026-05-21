@@ -1342,8 +1342,8 @@ Phase D ships M5 (sandbox + share URL pieces) and M8 (marketplace UI). The Petri
 ### WD-24: Short URL `/d/{id}` + OpenGraph metadata + oEmbed
 
 **Phase:** D
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; CF Pages Function at sneakyfree/windy-drops-site/functions/d/[id].ts; full OG + Twitter card + oEmbed alternate; closes ADR-053 acceptance #11)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-16, WD-23
 **Blocks:** v1 ship (criterion #11 — share URL unfurls)
 
@@ -1382,8 +1382,8 @@ Phase D ships M5 (sandbox + share URL pieces) and M8 (marketplace UI). The Petri
 ### WD-25: Author profiles + follow graph + notifications
 
 **Phase:** D
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; GET /authors/{handle} + /authors/{handle}/drops; POST/DELETE /me/follows + GET; auto-creates Author rows on first follow; 6/6 tests)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-14, WD-15, WD-16
 **Blocks:** WD-26 (marketplace UI shows author profiles)
 
@@ -1473,8 +1473,8 @@ Phase E ships M5.5 (tips) for v1. Strands WD-29 and WD-30 are reserved for v1.1 
 ### WD-27: Stripe Connect Express OAuth + creator payout dashboard data
 
 **Phase:** E
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; OAuth init + callback + status endpoints; tests stub Stripe SDK; needs STRIPE_SECRET_KEY + STRIPE_CONNECT_CLIENT_ID + STRIPE_WEBHOOK_SECRET from lockbox at deploy time)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-14, WD-15
 **Blocks:** WD-28, WD-29 (v1.1)
 
@@ -1510,8 +1510,8 @@ Phase E ships M5.5 (tips) for v1. Strands WD-29 and WD-30 are reserved for v1.1 
 ### WD-28: Tip checkout + Stripe webhook receiver
 
 **Phase:** E
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; POST /drops/{id}/tip + POST /webhooks/stripe; 0% application_fee; bumps Author.lifetime_tips_cents on success; emits drop.tipped webhook; 9/9 tests pass with stubbed Stripe SDK)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-27, WD-21
 **Blocks:** v1 ship (acceptance criterion #5 — creator receives a real $1 tip)
 
@@ -1708,8 +1708,8 @@ This strand is shorthand for **ADR-054 milestones M-A through M-H** combined int
 ### WD-34: Federation contract sketch (peer registry endpoints + cross-registry manifest fetch)
 
 **Phase:** F
-**Status:** locked (v1 contract sketch, not full implementation)
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; GET /federation/peers + /drops/{peer}/{id} stubs; full v2 contract documented in sneakyfree/windy-registry/docs/federation-spec.md)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-15, WD-18
 **Blocks:** —
 
