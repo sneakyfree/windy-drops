@@ -871,8 +871,8 @@ The registry is the core service: it indexes drops, validates publishes, serves 
 ### WD-13: R2 bucket + custom domain `drops.windydrops.com`
 
 **Phase:** C
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7; script+runbook only; awaits Grant's one-time CF API run. tools/r2-provision.sh + docs/runbooks/r2-setup.md in sneakyfree/windy-registry@d55406e)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-12
 **Blocks:** WD-8 (SDK uploads here), WD-18 (registry reads bundles from here)
 
