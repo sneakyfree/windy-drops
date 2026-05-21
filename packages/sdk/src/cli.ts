@@ -43,11 +43,12 @@ program
 
 program
   .command("bundle")
-  .description("Produce a deterministic .zip + SHA-256 digest (WD-6)")
+  .description("Produce a deterministic .zip + SHA-256 digest")
   .argument("<path>", "drop directory")
-  .action(async () => {
-    console.error("bundle: not yet implemented (WD-6)");
-    process.exit(2);
+  .option("-o, --out <prefix>", "output path prefix (default: <parent>/<id>-<version>)")
+  .action(async (path: string, opts: { out?: string }) => {
+    const { run } = await import("./commands/bundle.js");
+    await run({ path, out: opts.out });
   });
 
 program

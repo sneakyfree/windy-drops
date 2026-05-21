@@ -617,8 +617,8 @@ Phase B ships M3a + M3b in parallel. Both SDKs share the same CLI surface (`wind
 ### WD-6: SDK `bundle` command (zip + SHA-256)
 
 **Phase:** B
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-5
 **Blocks:** WD-7, WD-8, WD-11
 
@@ -786,8 +786,8 @@ Phase B ships M3a + M3b in parallel. Both SDKs share the same CLI surface (`wind
 ### WD-11: Cross-SDK byte-identity conformance harness
 
 **Phase:** B
-**Status:** locked
-**Owner:** <unassigned>
+**Status:** done (2026-05-21 — Claude Opus 4.7)
+**Owner:** Claude Opus 4.7 (1M context)
 **Depends on:** WD-3, WD-6, WD-7, WD-10
 **Blocks:** v1 ship (per ADR-053 acceptance criterion #8 — "if criterion 8 fails, we redesign before either SDK ships v1.0.0")
 

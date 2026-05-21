@@ -7,6 +7,7 @@ from importlib.metadata import PackageNotFoundError, version
 
 import typer
 
+from .commands import bundle as bundle_cmd
 from .commands import new as new_cmd
 from .commands import validate as validate_cmd
 
@@ -43,19 +44,14 @@ def root(
     """Windy Drops CLI."""
 
 
-# new (WD-4) and validate (WD-5) are fully implemented.
+# new (WD-4), validate (WD-5), bundle (WD-6) are fully implemented.
 app.command("new")(new_cmd.run)
 app.command("validate")(validate_cmd.run)
+app.command("bundle")(bundle_cmd.run)
 
 
 # Stubs for later strands. They exit non-zero with a clear message until
 # their owning strand lands.
-
-@app.command("bundle")
-def bundle_stub(path: str) -> None:
-    """Produce a deterministic .zip + SHA-256 digest (WD-6)."""
-    typer.echo("bundle: not yet implemented (WD-6)", err=True)
-    raise typer.Exit(code=2)
 
 
 @app.command("sign")
