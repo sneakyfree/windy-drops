@@ -100,12 +100,34 @@ program
 
 program
   .command("fork")
-  .description("Clone a published drop locally, rewriting the manifest (WD-10)")
-  .argument("<source-drop-id>", "drop to fork")
+  .description("Clone a drop locally and rewrite its manifest (id/author/forked_from/version reset)")
+  .requiredOption("--from <path>", "local source drop directory (registry fetch lands once WD-12 ships)")
   .argument("<new-id>", "id for your fork")
-  .action(async () => {
-    console.error("fork: not yet implemented (WD-10)");
-    process.exit(2);
-  });
+  .argument("<target>", "directory to write the fork into (must be empty)")
+  .option("--name <name>", "human-readable name for the fork")
+  .option("--author-name <name>", "explicit author name; defaults to credentials.json")
+  .option("--author-passport <id>", "explicit author passport id")
+  .action(
+    async (
+      newId: string,
+      target: string,
+      opts: {
+        from: string;
+        name?: string;
+        authorName?: string;
+        authorPassport?: string;
+      },
+    ) => {
+      const { run } = await import("./commands/fork.js");
+      await run({
+        from: opts.from,
+        newId,
+        out: target,
+        newName: opts.name,
+        authorName: opts.authorName,
+        authorPassport: opts.authorPassport,
+      });
+    },
+  );
 
 await program.parseAsync(process.argv);
