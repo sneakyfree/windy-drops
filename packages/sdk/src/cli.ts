@@ -111,12 +111,25 @@ program
 
 program
   .command("withdraw")
-  .description("Hide a drop from search; existing installs keep working (WD-9)")
+  .description("Hide a drop from search; existing installs keep working")
   .argument("<drop-id>", "drop id to withdraw")
-  .action(async () => {
-    console.error("withdraw: not yet implemented (WD-9)");
-    process.exit(2);
-  });
+  .option("--registry-url <url>", "registry base URL")
+  .option("--token <jwt>", "Bearer token (defaults to $WINDY_REGISTRY_TOKEN)")
+  .option("--confirm", "actually do it (without this flag, just prints a dry-run notice)")
+  .action(
+    async (
+      dropId: string,
+      opts: { registryUrl?: string; token?: string; confirm?: boolean },
+    ) => {
+      const { run } = await import("./commands/withdraw.js");
+      await run({
+        dropId,
+        registryUrl: opts.registryUrl,
+        bearerToken: opts.token,
+        confirm: opts.confirm,
+      });
+    },
+  );
 
 program
   .command("fork")

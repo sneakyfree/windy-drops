@@ -13,6 +13,7 @@ from .commands import new as new_cmd
 from .commands import publish as publish_cmd
 from .commands import sign as sign_cmd
 from .commands import validate as validate_cmd
+from .commands import withdraw as withdraw_cmd
 
 app = typer.Typer(
     name="windy-drops",
@@ -47,23 +48,14 @@ def root(
     """Windy Drops CLI."""
 
 
-# Implemented (WD-4, 5, 6, 7, 8, 10):
+# All v1 SDK commands implemented (WD-4, 5, 6, 7, 8, 9, 10).
 app.command("new")(new_cmd.run)
 app.command("validate")(validate_cmd.run)
 app.command("bundle")(bundle_cmd.run)
 app.command("sign")(sign_cmd.run)
 app.command("publish")(publish_cmd.run)
 app.command("fork")(fork_cmd.run)
-
-
-# Stubs for later strands (server-blocked on Phase C registry):
-
-
-@app.command("withdraw")
-def withdraw_stub(drop_id: str) -> None:
-    """Hide a drop from search; existing installs keep working (WD-9)."""
-    typer.echo("withdraw: not yet implemented (WD-9 — needs registry)", err=True)
-    raise typer.Exit(code=2)
+app.command("withdraw")(withdraw_cmd.run)
 
 
 if __name__ == "__main__":
