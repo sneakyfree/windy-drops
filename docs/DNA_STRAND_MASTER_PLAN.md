@@ -1603,10 +1603,25 @@ Phase F wires up the first consumer surfaces (Control Panel per ADR-054, Chat tr
 ### WD-31: windy-control-panel repo bootstrap + Vitals/Fleet protocols + SDK host loader (full ADR-054)
 
 **Phase:** F
-**Status:** in-progress (M-A done 2026-05-21 — Claude Opus 4.7; repo at sneakyfree/windy-control-panel with monorepo skeleton + ADR-054 milestone tracker. M-B through M-H pending — ~7 working days estimated per ADR-054)
-**Owner:** Claude Opus 4.7 (1M context, M-A only)
+**Status:** in-progress — 6-of-8 substrands shipped 2026-05-21 (Claude Opus 4.7). Status by substrand:
+
+| Sub | Deliverable | Status | Reference |
+|---|---|---|---|
+| M-A | `sneakyfree/windy-control-panel` repo bootstrap + monorepo skeleton | ✅ done | commit `0b0d719` |
+| M-B | `@windy/control-panel-protocols` — Vitals v1 + Fleet v1 (JSON Schema + Zod codegen + 24 tests) | ✅ done | commit `c0cca65` |
+| M-C | `@windy/control-panel-host-electron` — pure-Node Vitals collector + IPC bridge (16 tests) | ✅ done | commit `6a58f04` |
+| M-D | account-server endpoints `GET /api/v1/vitals` + `GET /api/v1/me/fleet` (19 new tests, 51 existing smoke) | ✅ done | `sneakyfree/windy-pro` PR #160 (commit `12b80c2`) |
+| M-D.5 | `@windy/control-panel-host-web` — framework-agnostic browser host loader (iframe sandbox + postMessage; 31 tests) | ✅ done — added strand mid-flight, gates M-E/F/G/H | commit `d450db3` |
+| M-E | Echo HQ as a `control-panel-template` drop (`@windy/control-panel-drop-echo-hq`; 35 tests). Alpha Panel deferred — intentionally left to verify the openness criterion #6 via a community/external author | ✅ done (Echo HQ); Alpha Panel deferred | commit `5725b08` |
+| M-F | Web SPA `/control-panel` route consumes drops via SDK loader | ⏳ pending — non-tour-critical (server-demo banner reads as "not real" for grandma audience) |  |
+| M-G | Electron `renderer/control-panel.html` consumes drops via SDK loader; new entry in `ecosystem-nav.js` | ✅ done | `sneakyfree/windy-pro` PR #161 |
+| M-H | Grandma polish: pulsing Control Panel tile post-hatch; default-drop auto-selected; zero-fleet friendly state; thermal warning chip | ⏳ pending — tour-readiness nice-to-have |  |
+
+106 tests green across the 4 canonical packages in `sneakyfree/windy-control-panel`. PR #161 (M-G) bundles Echo HQ locally for offline use so the tour demo works without the registry being Stripe-unblocked; swapping `bundleOrigin` from `file://` → `https://drops.windydrops.com` is a one-line change when the registry deploys.
+
+**Owner:** Claude Opus 4.7 (1M context, all 6 shipped substrands)
 **Depends on:** WD-1 (TS bindings for manifest typing), WD-8 (publish official drops via SDK), WD-17 (library lookup)
-**Blocks:** ADR-054 acceptance criteria
+**Blocks:** ADR-054 acceptance criteria — criterion #6 (openness) made concrete once M-F + permissionless publish demo land post-Stripe.
 
 **Purpose:** Create the windy-control-panel repo. Implement Vitals + Fleet protocols as a TypeScript package. Port the IPC bridge from `~/wp-echohq` worktree. Add account-server `/api/v1/vitals` + `/api/v1/me/fleet` endpoints. Port Echo HQ + Alpha Panel as drops. Build the Web SPA + Electron host loaders. Polish for grandma demo.
 
