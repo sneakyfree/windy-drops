@@ -1603,7 +1603,7 @@ Phase F wires up the first consumer surfaces (Control Panel per ADR-054, Chat tr
 ### WD-31: windy-control-panel repo bootstrap + Vitals/Fleet protocols + SDK host loader (full ADR-054)
 
 **Phase:** F
-**Status:** in-progress — 6-of-8 substrands shipped 2026-05-21 (Claude Opus 4.7). Status by substrand:
+**Status:** in-progress — 7-of-8 substrands shipped 2026-05-21 (Claude Opus 4.7); M-F (Web SPA) deferred as non-tour-critical. Status by substrand:
 
 | Sub | Deliverable | Status | Reference |
 |---|---|---|---|
@@ -1615,7 +1615,7 @@ Phase F wires up the first consumer surfaces (Control Panel per ADR-054, Chat tr
 | M-E | Echo HQ as a `control-panel-template` drop (`@windy/control-panel-drop-echo-hq`; 35 tests). Alpha Panel deferred — intentionally left to verify the openness criterion #6 via a community/external author | ✅ done (Echo HQ); Alpha Panel deferred | commit `5725b08` |
 | M-F | Web SPA `/control-panel` route consumes drops via SDK loader | ⏳ pending — non-tour-critical (server-demo banner reads as "not real" for grandma audience) |  |
 | M-G | Electron `renderer/control-panel.html` consumes drops via SDK loader; new entry in `ecosystem-nav.js` | ✅ done | `sneakyfree/windy-pro` PR #161 |
-| M-H | Grandma polish: pulsing Control Panel tile post-hatch; default-drop auto-selected; zero-fleet friendly state; thermal warning chip | ⏳ pending — tour-readiness nice-to-have |  |
+| M-H | Grandma polish: pulsing tile (per-user one-time call-to-action) + thermal warning chip (CPU >90%); default-drop + zero-fleet states already shipped with M-E/G | ✅ done | `sneakyfree/windy-control-panel` commit `39846d4` + `sneakyfree/windy-pro` PR #161 commit `64f7a28` |
 
 106 tests green across the 4 canonical packages in `sneakyfree/windy-control-panel`. PR #161 (M-G) bundles Echo HQ locally for offline use so the tour demo works without the registry being Stripe-unblocked; swapping `bundleOrigin` from `file://` → `https://drops.windydrops.com` is a one-line change when the registry deploys.
 
