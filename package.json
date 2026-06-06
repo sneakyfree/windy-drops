@@ -13,8 +13,8 @@
     "packages/*"
   ],
   "scripts": {
-    "lint": "echo 'lint not yet wired'",
-    "test": "echo 'tests not yet wired'",
-    "build": "echo 'build not yet wired'"
+    "lint": "npm run codegen:check --workspaces --if-present",
+    "build": "npm run build --workspaces",
+    "test": "npm run build && npm run test --workspaces"
   }
 }
