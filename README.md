@@ -23,7 +23,9 @@ This repo holds:
 - **`examples/`** — copy-paste scaffolds for new drop authors (one per drop type).
 - **`tools/`** — bundle conformance tests + R2 upload helpers + cross-SDK byte-identity verification.
 
-**Polyglot by design.** Both Python and TypeScript SDKs are first-class — neither is the "canonical" implementation. A drop published from `pip install windy-drops` is byte-identical to one published from `npm install -g @windy/drops-sdk`. See ADR-053 §"Language bindings policy."
+Phases A + B have shipped: the canonical `windy.drop.v1` JSON Schema, both language bindings (TypeScript + Python) codegen'd from it, and both SDKs exposing the same 7-command CLI surface — `new`, `validate`, `sign`, `bundle`, `publish`, `withdraw`, `fork`.
+
+**Polyglot by design.** Both Python and TypeScript SDKs are first-class — neither is the "canonical" implementation. A drop published from `pip install windy-drops` is byte-identical to one published from `npm install -g @windy/drops-sdk`; the cross-SDK byte-identity conformance test (WD-11) enforces it in CI. See ADR-053 §"Language bindings policy."
 
 The registry service (search, trending, install API, user libraries) lives separately in `sneakyfree/windy-registry` (FastAPI + Postgres + R2). Per-surface host code (Control Panel, Fly skill picker, etc.) lives in each surface's own repo.
 
@@ -59,9 +61,12 @@ New types are additive — each ships its own ADR and consumer surface.
 
 ## Status
 
-🟢 **Foundation** (2026-05-21).
+🟢 **Phases A + B shipped** (M2 + M3a/M3b).
 
-This is the very beginning. The repo is bootstrapped; the spec ADRs are pending; the SDK is unimplemented. Watch for milestones in `docs/MILESTONES.md` as they land.
+- **Phase A (M2)** — canonical `schemas/windy.drop.v1.json` plus dual language bindings: `@windy/drops-artifact-spec` (TypeScript, Zod) and `windy_drops_spec` (Python, Pydantic v2), both codegen'd from the JSON Schema.
+- **Phase B (M3a + M3b)** — both SDKs (`@windy/drops-sdk` on npm, `windy-drops` on PyPI) ship the same 7-command `windy-drops` CLI: `new`, `validate`, `sign`, `bundle`, `publish`, `withdraw`, `fork`. Cross-SDK byte-identity is verified in CI (WD-11).
+
+Next up is the registry service (`sneakyfree/windy-registry`) and the first consumer surface. Watch for milestones in `docs/MILESTONES.md` as they land.
 
 ## Companion repos
 
