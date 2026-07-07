@@ -48,6 +48,42 @@ def resolve_registry_url(*, registry_url: str | None = None) -> str:
     )
 
 
+def upload_bundle_bytes(
+    *,
+    registry_url: str,
+    bearer_token: str,
+    drop_id: str,
+    version: str,
+    zip_bytes: bytes,
+) -> list[str]:
+    """PUT the bundle zip to the registry, which pushes it to R2.
+
+    Returns the list of uploaded object keys. The registry re-verifies the
+    SHA-256 against the published version row, so a tampered zip is rejected.
+    """
+    url = f"{registry_url}/api/v1/drops/{drop_id}/versions/{version}/bundle"
+    r = httpx.put(
+        url,
+        content=zip_bytes,
+        headers={
+            "authorization": f"Bearer {bearer_token}",
+            "content-type": "application/zip",
+        },
+        timeout=120.0,
+    )
+    if r.status_code >= 400:
+        try:
+            body = r.json()
+        except Exception:
+            body = r.text
+        raise RegistryError(
+            f"registry rejected bundle upload: {r.status_code}",
+            status=r.status_code,
+            body=body,
+        )
+    return r.json().get("uploaded", [])
+
+
 def publish_to_registry(
     *,
     registry_url: str,

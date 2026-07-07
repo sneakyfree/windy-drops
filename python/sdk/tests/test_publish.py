@@ -152,3 +152,47 @@ def test_fetch_drop_raises_on_5xx(monkeypatch: pytest.MonkeyPatch) -> None:
     with pytest.raises(RegistryError) as exc:
         fetch_drop(registry_url="https://api", drop_id="x")
     assert exc.value.status == 500
+
+
+def test_upload_bundle_bytes_puts_zip_and_returns_keys(monkeypatch: pytest.MonkeyPatch) -> None:
+    from windy_drops.lib.registry import upload_bundle_bytes
+
+    calls: list[dict[str, Any]] = []
+
+    def fake_put(url: str, *, content: bytes, headers: dict[str, str], timeout: float):
+        calls.append({"url": url, "content": content, "headers": headers})
+        return httpx.Response(
+            200, json={"uploaded": ["d/1.0.0/d-1.0.0.zip", "d/1.0.0/SKILL.md"]}
+        )
+
+    monkeypatch.setattr(httpx, "put", fake_put)
+    keys = upload_bundle_bytes(
+        registry_url="https://reg.example",
+        bearer_token="tok",
+        drop_id="d",
+        version="1.0.0",
+        zip_bytes=b"PK\x03\x04",
+    )
+    assert keys == ["d/1.0.0/d-1.0.0.zip", "d/1.0.0/SKILL.md"]
+    assert calls[0]["url"] == "https://reg.example/api/v1/drops/d/versions/1.0.0/bundle"
+    assert calls[0]["headers"]["authorization"] == "Bearer tok"
+    assert calls[0]["headers"]["content-type"] == "application/zip"
+    assert calls[0]["content"] == b"PK\x03\x04"
+
+
+def test_upload_bundle_bytes_raises_registry_error_on_4xx(monkeypatch: pytest.MonkeyPatch) -> None:
+    from windy_drops.lib.registry import upload_bundle_bytes
+
+    def fake_put(url: str, *, content: bytes, headers: dict[str, str], timeout: float):
+        return httpx.Response(422, json={"detail": {"error": "bundle_sha_mismatch"}})
+
+    monkeypatch.setattr(httpx, "put", fake_put)
+    with pytest.raises(RegistryError) as exc:
+        upload_bundle_bytes(
+            registry_url="https://reg.example",
+            bearer_token="tok",
+            drop_id="d",
+            version="1.0.0",
+            zip_bytes=b"x",
+        )
+    assert exc.value.status == 422

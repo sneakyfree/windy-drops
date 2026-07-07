@@ -1,18 +1,19 @@
 // publish command — WD-8. Validate → bundle → (optional sign) →
-// POST manifest+URL+sha256 to the registry.
-//
-// R2 upload is currently a no-op (bundle stays on disk) — it lands once
-// the registry exposes R2 credentials via /.well-known/r2-config and the
-// SDK adds the upload step. For v1 testing, this is sufficient because
-// the registry accepts the SHA-256 in the request body and does not
-// re-fetch the bundle.
+// POST manifest+URL+sha256 to the registry → PUT the zip bytes so the
+// registry pushes them to R2 (unless --bundle-url points elsewhere or
+// --skip-upload is set).
 
 import { readFileSync } from "node:fs";
 
 import chalk from "../lib/chalk-shim.js";
 import { readSkillMd } from "../lib/skill-md.js";
 import { bundle as runBundle } from "./bundle.js";
-import { fetchDrop, publishToRegistry, resolveRegistryUrl } from "../lib/registry.js";
+import {
+  fetchDrop,
+  publishToRegistry,
+  resolveRegistryUrl,
+  uploadBundleBytes,
+} from "../lib/registry.js";
 
 export interface PublishOptions {
   path: string;
@@ -23,6 +24,8 @@ export interface PublishOptions {
   bundleUrl?: string;
   /** F15: bypass the withdrawn-state pre-check (re-publish into a withdrawn id). */
   force?: boolean;
+  /** Record the pointer only; do not push bundle bytes to the CDN. */
+  skipUpload?: boolean;
 }
 
 const PUBLIC_BUNDLE_DOMAIN = "drops.windydrops.com";
@@ -91,6 +94,29 @@ export async function run(opts: PublishOptions): Promise<void> {
         (result.signer_passport ? ` (${result.signer_passport})` : "") +
         "\n",
     );
+
+    // Push the actual bytes. A custom --bundle-url means the author hosts
+    // the bundle elsewhere, so there is nothing to upload to our CDN.
+    if (opts.bundleUrl || opts.skipUpload) {
+      process.stdout.write("  upload: skipped (custom --bundle-url or --skip-upload)\n");
+    } else {
+      try {
+        const keys = await uploadBundleBytes({
+          registryUrl: resolveRegistryUrl(opts),
+          bearerToken: token,
+          dropId: id,
+          version,
+          zipBytes: readFileSync(bundleResult.zipPath),
+        });
+        process.stdout.write(`  upload: ${keys.length} objects live on the CDN\n`);
+      } catch (e) {
+        process.stderr.write(
+          `${chalk.red("✗")} published, but bundle upload failed: ${(e as Error).message}. ` +
+            `Re-run publish, or PUT the zip to /api/v1/drops/${id}/versions/${version}/bundle\n`,
+        );
+        process.exit(4);
+      }
+    }
     process.exit(0);
   } catch (e) {
     process.stderr.write(`${chalk.red("✗")} ${(e as Error).message}\n`);
