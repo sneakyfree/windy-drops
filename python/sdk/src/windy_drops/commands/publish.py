@@ -13,6 +13,7 @@ from ..lib.registry import (
     fetch_drop,
     publish_to_registry,
     resolve_registry_url,
+    upload_bundle_bytes,
 )
 from ..lib.skill_md import read_skill_md
 from .bundle import bundle as do_bundle
@@ -27,6 +28,9 @@ def run(
     bundle_url: str | None = typer.Option(None, "--bundle-url"),
     dry_run: bool = typer.Option(False, "--dry-run"),
     force: bool = typer.Option(False, "--force", help="bypass withdrawn-state pre-check"),
+    skip_upload: bool = typer.Option(
+        False, "--skip-upload", help="record the pointer only; do not push bundle bytes"
+    ),
 ) -> None:
     """Validate, bundle, then POST to the registry."""
     try:
@@ -91,6 +95,29 @@ def run(
         if result.signer_passport:
             sig += f" ({result.signer_passport})"
         typer.echo(f"  signature: {sig}")
+
+        # Push the actual bytes. A custom --bundle-url means the author hosts
+        # the bundle elsewhere, so there is nothing to upload to our CDN.
+        if bundle_url or skip_upload:
+            typer.echo("  upload: skipped (custom --bundle-url or --skip-upload)")
+        else:
+            try:
+                keys = upload_bundle_bytes(
+                    registry_url=resolve_registry_url(registry_url=registry_url),
+                    bearer_token=bearer,
+                    drop_id=drop_id,
+                    version=version,
+                    zip_bytes=bundle_result.zip_path.read_bytes(),
+                )
+                typer.echo(f"  upload: {len(keys)} objects live on the CDN")
+            except RegistryError as e:
+                typer.echo(
+                    f"✗ published, but bundle upload failed ({e.status}): {e.body}. "
+                    "Re-run publish, or PUT the zip to "
+                    f"/api/v1/drops/{drop_id}/versions/{version}/bundle",
+                    err=True,
+                )
+                raise typer.Exit(code=4) from e
     except RegistryError as e:
         typer.echo(f"✗ {e}", err=True)
         if e.status == 401:

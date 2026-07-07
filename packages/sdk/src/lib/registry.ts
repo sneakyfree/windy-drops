@@ -79,3 +79,38 @@ export async function publishToRegistry(opts: {
   }
   return (await r.json()) as PublishedDrop;
 }
+
+export async function uploadBundleBytes(opts: {
+  registryUrl: string;
+  bearerToken: string;
+  dropId: string;
+  version: string;
+  zipBytes: Uint8Array;
+}): Promise<string[]> {
+  // PUT the bundle zip to the registry, which re-verifies the SHA-256
+  // against the published version row and pushes zip + members to R2.
+  const url = `${opts.registryUrl}/api/v1/drops/${opts.dropId}/versions/${opts.version}/bundle`;
+  const r = await fetch(url, {
+    method: "PUT",
+    headers: {
+      "content-type": "application/zip",
+      authorization: `Bearer ${opts.bearerToken}`,
+    },
+    body: opts.zipBytes,
+  });
+  if (!r.ok) {
+    let body: unknown;
+    try {
+      body = await r.json();
+    } catch {
+      body = await r.text();
+    }
+    throw new RegistryError(
+      `registry rejected bundle upload: ${r.status}`,
+      r.status,
+      body,
+    );
+  }
+  const data = (await r.json()) as { uploaded?: string[] };
+  return data.uploaded ?? [];
+}

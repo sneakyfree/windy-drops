@@ -148,3 +148,50 @@ test("publishToRegistry throws RegistryError with status + body on non-2xx", asy
     },
   );
 });
+
+test("uploadBundleBytes PUTs zip with Bearer + returns uploaded keys", async (t) => {
+  const { uploadBundleBytes } = await import("../dist/lib/registry.js");
+  const calls = [];
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (url, init) => {
+    calls.push({ url, init });
+    return new Response(
+      JSON.stringify({ uploaded: ["d/1.0.0/d-1.0.0.zip", "d/1.0.0/SKILL.md"] }),
+      { status: 200, headers: { "content-type": "application/json" } },
+    );
+  };
+  t.after(() => (globalThis.fetch = realFetch));
+
+  const keys = await uploadBundleBytes({
+    registryUrl: "https://reg.example",
+    bearerToken: "tok",
+    dropId: "d",
+    version: "1.0.0",
+    zipBytes: new Uint8Array([80, 75, 3, 4]),
+  });
+  assert.deepEqual(keys, ["d/1.0.0/d-1.0.0.zip", "d/1.0.0/SKILL.md"]);
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].url, "https://reg.example/api/v1/drops/d/versions/1.0.0/bundle");
+  assert.equal(calls[0].init.method, "PUT");
+  assert.equal(calls[0].init.headers.authorization, "Bearer tok");
+  assert.equal(calls[0].init.headers["content-type"], "application/zip");
+});
+
+test("uploadBundleBytes throws RegistryError with status + body on non-2xx", async (t) => {
+  const { uploadBundleBytes, RegistryError: RE } = await import("../dist/lib/registry.js");
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async () =>
+    new Response(JSON.stringify({ detail: { error: "bundle_sha_mismatch" } }), { status: 422 });
+  t.after(() => (globalThis.fetch = realFetch));
+
+  await assert.rejects(
+    uploadBundleBytes({
+      registryUrl: "https://reg.example",
+      bearerToken: "tok",
+      dropId: "d",
+      version: "1.0.0",
+      zipBytes: new Uint8Array([1]),
+    }),
+    (e) => e instanceof RE && e.status === 422,
+  );
+});

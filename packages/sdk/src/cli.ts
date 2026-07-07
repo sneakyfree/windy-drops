@@ -89,6 +89,7 @@ program
   .option("--bundle-url <url>", "override the public bundle URL recorded in the registry")
   .option("--dry-run", "print payload + exit (no upload, no POST)")
   .option("--force", "bypass the withdrawn-state pre-check")
+  .option("--skip-upload", "record the pointer only; do not push bundle bytes")
   .action(
     async (
       path: string,
@@ -98,6 +99,7 @@ program
         bundleUrl?: string;
         dryRun?: boolean;
         force?: boolean;
+        skipUpload?: boolean;
       },
     ) => {
       const { run } = await import("./commands/publish.js");
@@ -108,6 +110,7 @@ program
         bundleUrl: opts.bundleUrl,
         dryRun: opts.dryRun,
         force: opts.force,
+        skipUpload: opts.skipUpload,
       });
     },
   );
