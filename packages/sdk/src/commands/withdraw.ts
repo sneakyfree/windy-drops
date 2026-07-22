@@ -2,6 +2,7 @@
 
 import chalk from "../lib/chalk-shim.js";
 import { resolveRegistryUrl, RegistryError } from "../lib/registry.js";
+import { fetchWithTimeout } from "../lib/http.js";
 
 export interface WithdrawOptions {
   dropId: string;
@@ -27,10 +28,10 @@ export async function run(opts: WithdrawOptions): Promise<void> {
     }
 
     const url = `${resolveRegistryUrl(opts)}/api/v1/drops/${encodeURIComponent(opts.dropId)}`;
-    const r = await fetch(url, {
+    const r = await fetchWithTimeout(url, {
       method: "DELETE",
       headers: { authorization: `Bearer ${token}` },
-    });
+    }, 30_000);
     if (!r.ok) {
       let body;
       try { body = await r.json(); } catch { body = await r.text(); }
