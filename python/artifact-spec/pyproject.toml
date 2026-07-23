@@ -27,7 +27,10 @@ dependencies = [
 
 [project.optional-dependencies]
 codegen = [
-    "datamodel-code-generator>=0.25",
+    # Pinned: the CI staleness check regenerates with exactly this version.
+    # Generator output format drifts across releases, so an unpinned codegen
+    # dependency makes committed bindings rot without any schema change.
+    "datamodel-code-generator==0.70.0",
 ]
 test = [
     "pytest>=8",

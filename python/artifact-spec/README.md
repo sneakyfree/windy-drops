@@ -50,8 +50,9 @@ assert manifest.type in DROP_TYPES
 The `src/windy_drops_spec/_generated.py` file is GENERATED from `schemas/windy.drop.v1.json`. Don't hand-edit.
 
 ```bash
-# Regenerate (uses datamodel-code-generator)
-uvx --with datamodel-code-generator python codegen.py
+# Regenerate (datamodel-code-generator is version-pinned — its output
+# format drifts across releases, which would fail the CI staleness check)
+uvx --with 'datamodel-code-generator==0.70.0' python codegen.py
 
 # Build wheel + sdist
 uv build
@@ -63,7 +64,7 @@ uv pip install -e .[test] && pytest
 CI re-runs `codegen.py` on every PR and fails if the generated file is stale:
 
 ```bash
-uvx --with datamodel-code-generator python codegen.py
+uvx --with 'datamodel-code-generator==0.70.0' python codegen.py
 git diff --exit-code -- src/windy_drops_spec/_generated.py
 ```
 
