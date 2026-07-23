@@ -12,9 +12,11 @@ permissions:
 jobs:
   schema:
     name: schema (ajv + jsonschema)
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
     steps:
       - uses: actions/checkout@v4
+      - name: runner-lint (hosted runners are billing-locked)
+        run: bash "$GITHUB_WORKSPACE/.github/lint/lint-runner-labels.sh" "$GITHUB_WORKSPACE/.github/workflows"
       - uses: actions/setup-node@v4
         with: { node-version: "20" }
       - uses: actions/setup-python@v5
@@ -24,7 +26,7 @@ jobs:
 
   ts-bindings:
     name: ts-bindings (@windy/drops-artifact-spec)
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
     defaults:
       run:
         working-directory: packages/artifact-spec
@@ -39,7 +41,7 @@ jobs:
 
   py-bindings:
     name: py-bindings (windy-drops-spec)
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
     defaults:
       run:
         working-directory: python/artifact-spec
@@ -60,7 +62,7 @@ jobs:
 
   ts-sdk:
     name: ts-sdk (@windy/drops-sdk)
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
     needs: ts-bindings
     defaults:
       run:
@@ -83,7 +85,7 @@ jobs:
 
   py-sdk:
     name: py-sdk (windy-drops)
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
     needs: py-bindings
     steps:
       - uses: actions/checkout@v4
@@ -108,7 +110,7 @@ jobs:
 
   cross-sdk-identity:
     name: WD-11 cross-SDK byte-identity
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
     needs: [ts-sdk, py-sdk]
     steps:
       - uses: actions/checkout@v4
