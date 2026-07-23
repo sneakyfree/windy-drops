@@ -1,6 +1,6 @@
 # GENERATED FILE. DO NOT EDIT.
-# Run `uvx --with datamodel-code-generator python codegen.py` from
-# python/artifact-spec/ to regenerate.
+# Run `uvx --with 'datamodel-code-generator==0.70.0' python codegen.py`
+# from python/artifact-spec/ to regenerate.
 # Source: schemas/windy.drop.v1.json (WD-0 of DNA_STRAND_MASTER_PLAN.md).
 #
 # This file ships in the windy-drops-spec package on PyPI. Both this
@@ -11,7 +11,7 @@
 from __future__ import annotations
 
 from enum import StrEnum
-from typing import Any, Literal
+from typing import Any, Dict, Literal
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, RootModel
 
@@ -45,7 +45,9 @@ class I18nString2(BaseModel):
     model_config = ConfigDict(
         extra="allow",
     )
-    __pydantic_extra__: dict[str, str]
+    __annotations__ = {
+        "__pydantic_extra__": Dict[str, str],
+    }
     default: str = Field(
         ..., pattern="^[a-z]{2,3}(-[A-Z][a-z]{3})?(-[A-Z]{2}|-[0-9]{3})?$"
     )

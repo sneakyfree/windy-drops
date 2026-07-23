@@ -6,7 +6,11 @@ CI re-runs this on every PR and fails if the generated file is stale relative to
 the schema (see .github/workflows/ci.yml).
 
 Usage:
-    uvx --with datamodel-code-generator python codegen.py
+    uvx --with 'datamodel-code-generator==0.70.0' python codegen.py
+
+The generator version is pinned (here, in pyproject.toml [codegen], and in
+ci.yml) because its output format drifts across releases, which would fail
+the CI staleness check without any schema change.
 """
 
 from __future__ import annotations
@@ -42,8 +46,8 @@ def main() -> int:
         disable_timestamp=True,
         custom_file_header=(
             "# GENERATED FILE. DO NOT EDIT.\n"
-            "# Run `uvx --with datamodel-code-generator python codegen.py` from\n"
-            "# python/artifact-spec/ to regenerate.\n"
+            "# Run `uvx --with 'datamodel-code-generator==0.70.0' python codegen.py`\n"
+            "# from python/artifact-spec/ to regenerate.\n"
             "# Source: schemas/windy.drop.v1.json (WD-0 of DNA_STRAND_MASTER_PLAN.md).\n"
             "#\n"
             "# This file ships in the windy-drops-spec package on PyPI. Both this\n"

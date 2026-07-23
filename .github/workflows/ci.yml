@@ -50,7 +50,9 @@ jobs:
       - uses: astral-sh/setup-uv@v3
       - name: Regenerate + staleness check
         run: |
-          uvx --with datamodel-code-generator python codegen.py
+          # Version pinned: generator output format drifts across releases,
+          # which fails the staleness check without any schema change.
+          uvx --with 'datamodel-code-generator==0.70.0' python codegen.py
           git diff --exit-code -- src/windy_drops_spec/_generated.py
       - name: Build wheel + sdist
         run: uv build
